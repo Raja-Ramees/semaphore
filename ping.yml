@@ -1,7 +1,7 @@
 ---
 - name: Ping Test Playbook
-  hosts: all
+  hosts: semaphore
   gather_facts: no
   tasks:
-    - name: Ping the hosts
-      ansible.builtin.ping:
+    - name: Ping
+      ping:
