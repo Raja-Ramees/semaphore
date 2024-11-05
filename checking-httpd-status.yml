@@ -1,4 +1,5 @@
 - hosts: all
+  become: true
   tasks:
     - name: Ensure apache is installed
       package:
