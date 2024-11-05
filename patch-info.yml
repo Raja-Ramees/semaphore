@@ -1,22 +1,32 @@
 ---
-- name: Check updates and list repositories
+- name: Check and apply updates on servers
   hosts: all
-  become: true
+  become: yes
   tasks:
-
+    
     - name: Check for available updates
       yum:
         list: updates
-      register: update_result
+      register: updates_check
 
     - name: Display available updates
       debug:
-        msg: "{{ update_result.results }}"
+        msg: "{{ updates_check.results }}"
+    
+    - name: Apply updates
+      yum:
+        name: '*'
+        state: latest
+      register: applied_updates
 
+    - name: Display applied updates
+      debug:
+        msg: "{{ applied_updates.results | selectattr('state', 'equalto', 'updated') | map(attribute='name') | list }}"
+    
     - name: List configured repositories
       command: yum repolist all
-      register: repo_result
+      register: repo_list
 
     - name: Display repository list
       debug:
-        msg: "{{ repo_result.stdout_lines }}"
+        msg: "{{ repo_list.stdout_lines }}"
