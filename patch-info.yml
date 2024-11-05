@@ -1,5 +1,6 @@
 - name: Check and apply updates on servers
   hosts: all
+  become: true  # Add this line to allow privilege escalation
   tasks:
     - name: Gathering Facts
       setup:
