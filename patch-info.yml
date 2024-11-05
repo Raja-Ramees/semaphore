@@ -1,0 +1,22 @@
+---
+- name: Check updates and list repositories
+  hosts: all
+  become: true
+  tasks:
+
+    - name: Check for available updates
+      yum:
+        list: updates
+      register: update_result
+
+    - name: Display available updates
+      debug:
+        msg: "{{ update_result.results }}"
+
+    - name: List configured repositories
+      command: yum repolist all
+      register: repo_result
+
+    - name: Display repository list
+      debug:
+        msg: "{{ repo_result.stdout_lines }}"
