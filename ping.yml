@@ -1,6 +1,6 @@
 ---
 - name: Ping Test Playbook
-  hosts: semaphore
+  hosts: all
   gather_facts: no
   tasks:
     - name: Ping
