@@ -4,24 +4,27 @@
   gather_facts: no
   become: yes
   tasks:
-    - name: Get the list of all repositories
-      yum:
-        list: all
+    - name: Get the list of all repositories (enabled and disabled)
+      command: yum repolist all
       register: repo_list
+
+    - name: Display the list of repositories
+      debug:
+        var: repo_list.stdout_lines
 
     - name: Get YUM history
       command: yum history
       register: yum_history
 
-    - name: Get the list of available packages
-      yum:
-        list: available
-      register: available_packages
+    #- name: Get the list of available packages
+     # yum:
+      #  list: available
+      #register: available_packages
 
-    - name: Get the list of installed packages
-      yum:
-        list: installed
-      register: installed_packages
+    #- name: Get the list of installed packages
+     # yum:
+      #  list: installed
+      #egister: installed_packages
 
     - name: Display the list of repositories
       debug:
@@ -31,10 +34,10 @@
       debug:
         var: yum_history.stdout_lines
 
-    - name: Display the available packages
-      debug:
-        var: available_packages
+    #- name: Display the available packages
+     # debug:
+      #  var: available_packages
 
-    - name: Display the installed packages
-      debug:
-        var: installed_packages
+    #- name: Display the installed packages
+     # debug:
+      #  var: installed_packages
