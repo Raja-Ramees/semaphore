@@ -1,0 +1,61 @@
+- name: Gather patch information from remote server
+  hosts: all                # or use direct ip address 192.168.1.213
+  gather_facts: no
+  tasks:
+    - name: Gather installed packages and their versions
+      yum:
+        list: installed
+      register: installed_packages
+
+    - name: Gather available updates
+      yum:
+        list: updates
+      register: available_updates
+
+    - name: Get package update history
+      command: rpm -qa --last
+      register: update_history
+
+    - name: Gather enabled repositories
+      command: yum repolist enabled
+      register: enabled_repos
+
+    - name: Set facts for installed packages
+      set_fact:
+        installed_packages_info: "{{ installed_packages.results }}"
+
+    - name: Set facts for available updates
+      set_fact:
+        available_updates_info: "{{ available_updates.results }}"
+
+    - name: Set facts for update history
+      set_fact:
+        update_history_info: "{{ update_history.stdout_lines }}"
+
+    - name: Set facts for enabled repositories
+      set_fact:
+        enabled_repositories_info: "{{ enabled_repos.stdout_lines }}"
+
+    - name: Display installed packages
+      debug:
+        var: installed_packages_info
+
+    - name: Display available updates
+      debug:
+        var: available_updates_info
+
+    - name: Display update history
+      debug:
+        var: update_history_info
+
+    - name: Display enabled repositories
+      debug:
+        var: enabled_repositories_info
+
+    - name: Find packages that are not updated
+      set_fact:
+        not_updated_packages: "{{ installed_packages_info | difference(available_updates_info) }}"
+
+    - name: Display packages not updated
+      debug:
+        var: not_updated_packages
