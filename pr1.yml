@@ -1,0 +1,40 @@
+---
+- name: Gather YUM repository and package information
+  hosts: all
+  gather_facts: no
+  become: yes
+  tasks:
+    - name: Get the list of all repositories
+      yum:
+        list: all
+      register: repo_list
+
+    - name: Get YUM history
+      command: yum history
+      register: yum_history
+
+    - name: Get the list of available packages
+      yum:
+        list: available
+      register: available_packages
+
+    - name: Get the list of installed packages
+      yum:
+        list: installed
+      register: installed_packages
+
+    - name: Display the list of repositories
+      debug:
+        var: repo_list
+
+    - name: Display the YUM history
+      debug:
+        var: yum_history.stdout_lines
+
+    - name: Display the available packages
+      debug:
+        var: available_packages
+
+    - name: Display the installed packages
+      debug:
+        var: installed_packages
