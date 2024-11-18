@@ -58,13 +58,23 @@
           - "YUM Repo List (Disabled):"
           - "{{ yum_repolist_disabled.stdout_lines | default('No Output', true) }}"
 
-    - name: Get dnf list installed
+    - name: Gather installed packages and their repositories
+  
+
+    - name: Get installed packages with their repository info
       command: timeout 60 dnf list installed
       register: dnf_list_installed
       ignore_errors: true
 
-    - name: Show dnf list installed output
+    - name: Filter installed packages by repository
+      set_fact:
+        packages_with_repos: >-
+          {{ dnf_list_installed.stdout_lines 
+          | select('match', '.*@.*') 
+          | list }}
+
+    - name: Show repository-specific package details
       debug:
         msg:
-          - "DNF List Installed Output:"
-          - "{{ dnf_list_installed.stdout_lines | default('No Output', true) }}"
+          - "Packages and their repositories:"
+          - "{{ packages_with_repos | default('No Output', true) }}"
