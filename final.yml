@@ -1,82 +1,59 @@
 ---
-- name: Gather information from servers
-  hosts: all
-  become: yes
+- name: Gather yum and dnf command output
+  hosts: your_servers_group
+  become: true
   tasks:
 
-    - name: Run yum history
-      command: yum history
-      register: yum_history
-      ignore_errors: yes
-
-    - name: Save yum history output
-      copy:
-        content: "{{ yum_history.stdout }}"
-        dest: "/tmp/yum_history_{{ inventory_hostname }}.txt"
-      when: yum_history.stdout is defined
-
-    - name: Run yum repolist
-      command: yum repolist
-      register: yum_repolist
-      ignore_errors: yes
-
-    - name: Save yum repolist output
-      copy:
-        content: "{{ yum_repolist.stdout }}"
-        dest: "/tmp/yum_repolist_{{ inventory_hostname }}.txt"
-      when: yum_repolist.stdout is defined
-
-    - name: Run yum repolist enabled
-      command: yum repolist enabled
-      register: yum_repolist_enabled
-      ignore_errors: yes
-
-    - name: Save yum repolist enabled output
-      copy:
-        content: "{{ yum_repolist_enabled.stdout }}"
-        dest: "/tmp/yum_repolist_enabled_{{ inventory_hostname }}.txt"
-      when: yum_repolist_enabled.stdout is defined
-
-    - name: Run yum repolist disabled
-      command: yum repolist disabled
-      register: yum_repolist_disabled
-      ignore_errors: yes
-
-    - name: Save yum repolist disabled output
-      copy:
-        content: "{{ yum_repolist_disabled.stdout }}"
-        dest: "/tmp/yum_repolist_disabled_{{ inventory_hostname }}.txt"
-      when: yum_repolist_disabled.stdout is defined
-
-    - name: Run yum check-updates
-      command: yum check-updates
-      register: yum_check_updates
-      ignore_errors: yes
-
-    - name: Save yum check-updates output
-      copy:
-        content: "{{ yum_check_updates.stdout }}"
-        dest: "/tmp/yum_check_updates_{{ inventory_hostname }}.txt"
-      when: yum_check_updates.stdout is defined
-
-    - name: Run dnf check-update
+    - name: Get dnf check-update output
       command: dnf check-update
       register: dnf_check_update
-      ignore_errors: yes
+      ignore_errors: true
 
-    - name: Save dnf check-update output
-      copy:
-        content: "{{ dnf_check_update.stdout }}"
-        dest: "/tmp/dnf_check_update_{{ inventory_hostname }}.txt"
-      when: dnf_check_update.stdout is defined
+    - name: Show dnf check-update output
+      debug:
+        msg: "{{ dnf_check_update.stdout_lines }}"
 
-    - name: Run dnf list installed
+    - name: Get yum history
+      command: yum history
+      register: yum_history
+      ignore_errors: true
+
+    - name: Show yum history output
+      debug:
+        msg: "{{ yum_history.stdout_lines }}"
+
+    - name: Get yum repolist
+      command: yum repolist
+      register: yum_repolist
+      ignore_errors: true
+
+    - name: Show yum repolist output
+      debug:
+        msg: "{{ yum_repolist.stdout_lines }}"
+
+    - name: Get yum repolist enabled
+      command: yum repolist enabled
+      register: yum_repolist_enabled
+      ignore_errors: true
+
+    - name: Show yum repolist enabled output
+      debug:
+        msg: "{{ yum_repolist_enabled.stdout_lines }}"
+
+    - name: Get yum repolist disabled
+      command: yum repolist disabled
+      register: yum_repolist_disabled
+      ignore_errors: true
+
+    - name: Show yum repolist disabled output
+      debug:
+        msg: "{{ yum_repolist_disabled.stdout_lines }}"
+
+    - name: Get dnf list installed
       command: dnf list installed
       register: dnf_list_installed
-      ignore_errors: yes
+      ignore_errors: true
 
-    - name: Save dnf list installed output
-      copy:
-        content: "{{ dnf_list_installed.stdout }}"
-        dest: "/tmp/dnf_list_installed_{{ inventory_hostname }}.txt"
-      when: dnf_list_installed.stdout is defined
+    - name: Show dnf list installed output
+      debug:
+        msg: "{{ dnf_list_installed.stdout_lines }}"
