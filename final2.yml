@@ -1,0 +1,70 @@
+- name: Gather yum and dnf command output
+  hosts: your_servers_group
+  become: true
+  tasks:
+
+    - name: Get dnf check-update output
+      command: dnf check-update
+      register: dnf_check_update
+      ignore_errors: true
+
+    - name: Show dnf check-update output
+      debug:
+        msg:
+          - "DNF Check-Update Output:"
+          - "{{ dnf_check_update.stdout_lines | default('No Output', true) }}"
+
+    - name: Get yum history
+      command: yum history
+      register: yum_history
+      ignore_errors: true
+
+    - name: Show yum history output
+      debug:
+        msg:
+          - "YUM History Output:"
+          - "{{ yum_history.stdout_lines | default('No Output', true) }}"
+
+    - name: Get yum repolist
+      command: yum repolist
+      register: yum_repolist
+      ignore_errors: true
+
+    - name: Show yum repolist output
+      debug:
+        msg:
+          - "YUM Repo List:"
+          - "{{ yum_repolist.stdout_lines | default('No Output', true) }}"
+
+    - name: Get yum repolist enabled
+      command: yum repolist enabled
+      register: yum_repolist_enabled
+      ignore_errors: true
+
+    - name: Show yum repolist enabled output
+      debug:
+        msg:
+          - "YUM Repo List (Enabled):"
+          - "{{ yum_repolist_enabled.stdout_lines | default('No Output', true) }}"
+
+    - name: Get yum repolist disabled
+      command: yum repolist disabled
+      register: yum_repolist_disabled
+      ignore_errors: true
+
+    - name: Show yum repolist disabled output
+      debug:
+        msg:
+          - "YUM Repo List (Disabled):"
+          - "{{ yum_repolist_disabled.stdout_lines | default('No Output', true) }}"
+
+    - name: Get dnf list installed
+      command: dnf list installed
+      register: dnf_list_installed
+      ignore_errors: true
+
+    - name: Show dnf list installed output
+      debug:
+        msg:
+          - "DNF List Installed Output:"
+          - "{{ dnf_list_installed.stdout_lines | default('No Output', true) }}"
