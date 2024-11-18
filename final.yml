@@ -58,9 +58,6 @@
           - "YUM Repo List (Disabled):"
           - "{{ yum_repolist_disabled.stdout_lines | default('No Output', true) }}"
 
-    - name: Gather installed packages and their repositories
-  
-
     - name: Get installed packages with their repository info
       command: timeout 60 dnf list installed
       register: dnf_list_installed
