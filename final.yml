@@ -1,6 +1,6 @@
 ---
 - name: Gather yum and dnf command output
-  hosts: your_servers_group
+  hosts: all
   become: true
   tasks:
 
