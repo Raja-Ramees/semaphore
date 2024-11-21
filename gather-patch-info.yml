@@ -1,6 +1,6 @@
 - name: Gather yum and dnf command output
   hosts: all
-  become: true
+  become: yes
   tasks:
 
     - name: Get dnf check-update output
