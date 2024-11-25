@@ -1,4 +1,4 @@
-- name: Gather CPU and Memory Utilization
+- name: Gather System Information
   hosts: all
   tasks:
     - name: Check CPU Utilization
@@ -16,3 +16,11 @@
     - name: Display Memory Utilization
       debug:
         msg: "{{ memory_usage.stdout }}"
+
+    - name: Check Disk Space Usage
+      command: df -Th
+      register: disk_usage
+
+    - name: Display Disk Space Usage
+      debug:
+        msg: "{{ disk_usage.stdout }}"
