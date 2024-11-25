@@ -1,0 +1,18 @@
+- name: Gather CPU and Memory Utilization
+  hosts: all
+  tasks:
+    - name: Check CPU Utilization
+      command: uptime
+      register: cpu_usage
+
+    - name: Display CPU Utilization
+      debug:
+        msg: "{{ cpu_usage.stdout }}"
+
+    - name: Check Memory Utilization
+      command: free -m
+      register: memory_usage
+
+    - name: Display Memory Utilization
+      debug:
+        msg: "{{ memory_usage.stdout }}"
