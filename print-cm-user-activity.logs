@@ -1,0 +1,12 @@
+---
+- name: Display vm-user-activity.log file from remote servers
+  hosts: all  # This will target all the servers in your inventory
+  become: yes  # Use sudo if necessary to read the log file
+  tasks:
+    - name: Show the contents of vm-user-activity.log
+      shell: cat /var/log/vm-user-activity.log
+      register: log_content
+
+    - name: Display log content
+      debug:
+        msg: "{{ log_content.stdout }}"
