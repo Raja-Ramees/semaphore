@@ -7,7 +7,7 @@
     - name: Show the contents of vm-user-activity.log
       command: cat /var/log/vm-user-activity.log
       register: log_content
-      
+
     - name: Display log content
       debug:
         msg: "{{ log_content.stdout }}"
