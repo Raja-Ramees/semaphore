@@ -1,6 +1,6 @@
 ---
 - name: Read vm-user-activity.log
-  hosts: srhel-1
+  hosts: all
   become: yes
   tasks:
     - name: Read the log file content
