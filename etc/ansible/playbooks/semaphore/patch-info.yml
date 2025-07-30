@@ -1,0 +1,39 @@
+- name: Check and apply updates on servers
+  hosts: all
+  become: true
+  tasks:
+    - name: Gathering Facts
+      setup:
+
+    - name: Capture available updates
+      command: yum check-update
+      register: available_updates
+      ignore_errors: yes
+
+    - name: Display available updates
+      debug:
+        msg: "{{ available_updates.stdout_lines }}"
+      when: available_updates.stdout_lines is defined and available_updates.stdout_lines | length > 0
+
+    - name: Apply updates
+      yum:
+        name: '*'
+        state: latest
+
+    - name: Capture installed updates
+      command: yum history info last
+      register: applied_updates
+      ignore_errors: yes
+
+    - name: Display applied updates
+      debug:
+        msg: "{{ applied_updates.stdout_lines }}"
+      when: applied_updates.stdout_lines is defined and applied_updates.stdout_lines | length > 0
+
+    - name: List configured repositories
+      command: yum repolist
+      register: repo_list
+
+    - name: Display repository list
+      debug:
+        var: repo_list.stdout_lines
