@@ -1,10 +1,10 @@
 ---
-- name: Read vm-user-activity.log
+- name: Read server-user-activity.log
   hosts: all
   become: yes
   tasks:
     - name: Read the log file content
-      command: cat /var/log/vm-user-activity.log
+      command: cat /var/log/server-user-activity.log
       register: log_content
 
     - name: Display log content
